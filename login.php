@@ -1,47 +1,48 @@
 <?php
 //This script will handle login
-session_start();
+session_start(); // start session for log in 
 
 // check if the user is already logged in
-if(isset($_SESSION['username'])) // 
+if(isset($_SESSION['username'])) // jodi user age thkeek e log in thake 
 {
-    header("location: welcome.php");
-    exit;
+    header("location: welcome.php"); // redirect korbo welcome.php te 
+    exit; // ar por ar code a jabe nah 
 }
-require_once "config.php";
+require_once "config.php";// config for connect db 
 
-$username = $password = "";
+$username = $password = ""; //variable 
 $err = "";
 
 // if request method is post
-if ($_SERVER['REQUEST_METHOD'] == "POST"){
-    if(empty(trim($_POST['username'])) || empty(trim($_POST['password'])))
+if ($_SERVER['REQUEST_METHOD'] == "POST"){  // jodi post request pai 
+    if(empty(trim($_POST['username'])) || empty(trim($_POST['password']))) // jodi username or password empty  thake 
     {
-        $err = "Please enter username + password";
+        $err = " Opss !! Please enter username + password";
+        echo " Opss !! Please enter the username and  password to log in ";
     }
     else{
-        $username = trim($_POST['username']);
-        $password = trim($_POST['password']);
+        $username = trim($_POST['username']);// set username 
+        $password = trim($_POST['password']);// set password 
     }
 
 
-if(empty($err))
+if(empty($err))// kono error nah thakle  
 {
-    $sql = "SELECT id, username, password FROM users WHERE username = ?";
+    $sql = "SELECT id, username, password FROM users WHERE username = ?"; // user table thke nibe 
     $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "s", $param_username);
+    mysqli_stmt_bind_param($stmt, "s", $param_username);//   perameter ke bind kore dibe  stmt ar songe, paream_username diye 
     $param_username = $username;
     
     
     // Try to execute this statement
     if(mysqli_stmt_execute($stmt)){
-        mysqli_stmt_store_result($stmt);
-        if(mysqli_stmt_num_rows($stmt) == 1)
+        mysqli_stmt_store_result($stmt);// store result 
+        if(mysqli_stmt_num_rows($stmt) == 1) // user already exist korle thn age jabo , regrister thkakle 
                 {
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
-                    if(mysqli_stmt_fetch($stmt))
+                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);// again bind kortyce thn store 
+                    if(mysqli_stmt_fetch($stmt))// jodi password thake database a 
                     {
-                        if(password_verify($password, $hashed_password))
+                        if(password_verify($password, $hashed_password))// akn password jodi hash pass ar songe match kore 
                         {
                             // this means the password is corrct. Allow user to login
                             session_start();
@@ -50,7 +51,7 @@ if(empty($err))
                             $_SESSION["loggedin"] = true;
 
                             //Redirect user to welcome page
-                            header("location: welcome.php");
+                            header("location: welcome.php");// redirect kortyce welcome a 
                             
                         }
                     }
@@ -78,7 +79,7 @@ if(empty($err))
 
     <title>Joy Ecommerce login system!</title>
   </head>
-  <body>
+  <body> <!--bootstrap dark navbar getbootstrap theke pike korsi -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="#">Joy Ecommerce</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -114,10 +115,6 @@ if(empty($err))
   <div class="form-group">
     <label for="exampleInputPassword1">Password</label>
     <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Please Enter Password">
-  </div>
-  <div class="form-group form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>

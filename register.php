@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){ // post request paile aitai dukhbe
     // Check if username is empty
     if(empty(trim($_POST["username"]))){
         $username_err = "Opss Username can not be blank"; // jodi user name empty thake then aita print korbe 
+        echo "Opss!! Username can not be blank";
     }
     else{
         $sql = "SELECT id FROM users WHERE username = ?"; // pre -prepare korlam sql query ke 
@@ -26,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){ // post request paile aitai dukhbe
                 if(mysqli_stmt_num_rows($stmt) == 1) // statement a number of row  kto gula , jodi age regrister tahke thn 
                 {
                     $username_err = "This username is already taken"; 
+                    echo " Opss !! This username is already taken"; 
                 }
                 else{
                     $username = trim($_POST['username']);// jodi username age theke nah thake thn store korbe username ke 
@@ -43,9 +45,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){ // post request paile aitai dukhbe
 // Check for password
 if(empty(trim($_POST['password']))){ // password empty naki check kortyci
     $password_err = "Opss !! Password can not be blank"; 
+    echo "Opss !! Password can not be blank";
 }
 elseif(strlen(trim($_POST['password'])) < 5){ // password empty nah hole and pass length digit 4 ar kom hole 
     $password_err = "Password can not be less than 5 characters";
+    echo "Password can not be less than 5 characters";
 }
 else{
     $password = trim($_POST['password']);// password nibo tahole 
@@ -54,6 +58,7 @@ else{
 // Check for confirm password field ( match or not )
 if(trim($_POST['password']) !=  trim($_POST['confirm_password'])){ // confirm pass jodi pass ar songe match nah hoi thn 
     $password_err = "Opss !! Passwords should be matched ";
+    echo "Opss !! Passwords should be matched ";
 }
 
 
@@ -144,8 +149,12 @@ mysqli_close($conn);// database connection close
       <input type="password" class="form-control" name ="confirm_password" id="inputPassword" placeholder="Confirm Password"><!--type text -->
     </div>
   <div class="form-group">
-    <label for="inputAddress2">Address 2</label>
+    <label for="inputAddress2">Permanent Address </label>
     <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, Road ,or which floor">
+  </div>
+  <div class="form-group">
+    <label for="inputAddress2">Present Address </label>
+    <input type="text" class="form-control" id="inputAddress3" placeholder="Apartment, Road ,or which floor">
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
@@ -154,24 +163,14 @@ mysqli_close($conn);// database connection close
     </div>
     <div class="form-group col-md-4">
       <label for="inputState">State</label>
-      <select id="inputState" class="form-control">
-        <option selected>Choose...</option>
-        <option>...</option>
-      </select>
+      <input type="text" class="form-control" id="inputState">
     </div>
     <div class="form-group col-md-2">
       <label for="inputZip">Zip</label>
       <input type="text" class="form-control" id="inputZip">
     </div>
   </div>
-  <div class="form-group">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="gridCheck">
-      <label class="form-check-label" for="gridCheck">
-        Check me out
-      </label>
-    </div>
-  </div>
+ 
   <button type="submit" class="btn btn-primary">Sign in</button>
 </form>
 </div>
